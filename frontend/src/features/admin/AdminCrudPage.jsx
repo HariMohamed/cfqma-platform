@@ -4,12 +4,12 @@ import { ErrorState, LoadingState } from '../../components/StateBlock';
 import { adminService } from '../../services/adminService';
 import { AdminTable } from './AdminTable';
 
-export function AdminCrudPage({ title, resource, fields, seedRows = [] }) {
+export function AdminCrudPage({ title, resource, fields }) {
   const emptyForm = useMemo(
     () => Object.fromEntries(fields.map((field) => [field.name, field.defaultValue ?? (field.type === 'checkbox' ? false : '')])),
     [fields]
   );
-  const [rows, setRows] = useState(seedRows);
+  const [rows, setRows] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [editing, setEditing] = useState(null);
   const [status, setStatus] = useState('loading');
@@ -22,9 +22,9 @@ export function AdminCrudPage({ title, resource, fields, seedRows = [] }) {
       setRows(response.data ?? response);
       setStatus('ready');
     } catch {
-      setRows(seedRows);
+      setRows([]);
       setStatus('ready');
-      setError('Backend indisponible: affichage des donnees seed.');
+      setError('Backend indisponible ou session admin expirée.');
     }
   };
 
@@ -43,7 +43,7 @@ export function AdminCrudPage({ title, resource, fields, seedRows = [] }) {
       setEditing(null);
       await load();
     } catch {
-      setError('Operation impossible. Verifiez le backend, le token admin et la validation.');
+      setError('Opération impossible. Vérifiez le backend, le token admin et la validation.');
     }
   };
 
@@ -53,10 +53,6 @@ export function AdminCrudPage({ title, resource, fields, seedRows = [] }) {
   };
 
   const deleteRow = async (row) => {
-    if (!row._id) {
-      setError('Suppression disponible uniquement pour les donnees venant du backend.');
-      return;
-    }
     try {
       await adminService.remove(resource, row._id);
       await load();
@@ -82,9 +78,9 @@ export function AdminCrudPage({ title, resource, fields, seedRows = [] }) {
   if (status === 'loading') return <LoadingState />;
 
   return (
-    <div className="grid gap-6">
+    <div className="grid min-w-0 gap-6">
       {error && <ErrorState label={error} />}
-      <section className="rounded-lg bg-white p-6 shadow-sm">
+      <section className="min-w-0 rounded-lg bg-white p-6 shadow-sm">
         <h2 className="text-xl font-bold text-ink">{editing ? `Modifier ${title}` : `Ajouter ${title}`}</h2>
         <form onSubmit={submit} className="mt-5 grid gap-4 md:grid-cols-2">
           {fields.map((field) => (

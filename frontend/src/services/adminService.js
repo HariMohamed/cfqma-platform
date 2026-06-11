@@ -1,13 +1,13 @@
 import { api } from './api';
 
+const unwrap = (response) => response.data.data ?? response.data;
+
 export const adminService = {
-  login: async (credentials) => {
-    const response = await api.post('/admin/auth/login', credentials);
-    return response.data.data ?? response.data;
-  },
-  me: async () => (await api.get('/admin/me')).data,
-  list: async (resource) => (await api.get(`/admin/${resource}`)).data,
-  create: async (resource, payload) => (await api.post(`/admin/${resource}`, payload)).data,
-  update: async (resource, id, payload) => (await api.patch(`/admin/${resource}/${id}`, payload)).data,
-  remove: async (resource, id) => (await api.delete(`/admin/${resource}/${id}`)).data
+  login: async (credentials) => unwrap(await api.post('/admin/auth/login', credentials)),
+  me: async () => unwrap(await api.get('/admin/me')),
+  dashboardStats: async () => unwrap(await api.get('/admin/dashboard/stats')),
+  list: async (resource) => unwrap(await api.get(`/admin/${resource}`)),
+  create: async (resource, payload) => unwrap(await api.post(`/admin/${resource}`, payload)),
+  update: async (resource, id, payload) => unwrap(await api.patch(`/admin/${resource}/${id}`, payload)),
+  remove: async (resource, id) => unwrap(await api.delete(`/admin/${resource}/${id}`))
 };

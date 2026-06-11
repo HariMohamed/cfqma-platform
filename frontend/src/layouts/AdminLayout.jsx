@@ -7,6 +7,7 @@ const links = [
   ['Formations', '/admin/formations', BookOpen],
   ['Secteurs', '/admin/sectors', Layers],
   ['Actualités', '/admin/news', Newspaper],
+  ['Galerie', '/admin/gallery', Images],
   ['Messages', '/admin/contacts', Mail],
   ['Inscriptions', '/admin/registrations', ClipboardList]
 ];
@@ -42,7 +43,7 @@ export function AdminLayout() {
         </nav>
         <button onClick={logout} className="absolute bottom-4 left-4 right-4 flex items-center gap-3 rounded-md px-3 py-2 text-sm font-semibold text-white/70 hover:bg-white/10 hover:text-white">
           <LogOut size={18} />
-          Deconnexion
+          Déconnexion
         </button>
       </aside>
       <div className="lg:pl-64">

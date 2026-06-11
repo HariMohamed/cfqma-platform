@@ -1,5 +1,4 @@
 import { AdminCrudPage } from '../features/admin/AdminCrudPage';
-import { news } from '../data/seedData';
 
 const fields = [
   { name: 'title', label: 'Titre' },
@@ -13,5 +12,5 @@ const fields = [
 ];
 
 export function AdminNews() {
-  return <AdminCrudPage title="Actualités" resource="news" fields={fields} seedRows={news} />;
+  return <AdminCrudPage title="Actualités" resource="news" fields={fields} />;
 }

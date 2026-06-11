@@ -1,6 +1,6 @@
-export function AdminTable({ title, columns, rows, empty = 'Aucune donnee.', actions }) {
+export function AdminTable({ title, columns, rows, empty = 'Aucune donnée.', actions }) {
   return (
-    <section className="rounded-lg bg-white p-6 shadow-sm">
+    <section className="min-w-0 overflow-hidden rounded-lg bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold text-ink">{title}</h1>
         {actions}

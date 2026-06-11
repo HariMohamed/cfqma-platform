@@ -1,5 +1,4 @@
 import { AdminCrudPage } from '../features/admin/AdminCrudPage';
-import { sectors } from '../data/seedData';
 
 const fields = [
   { name: 'title', label: 'Titre' },
@@ -11,5 +10,5 @@ const fields = [
 ];
 
 export function AdminSectors() {
-  return <AdminCrudPage title="Secteurs" resource="sectors" fields={fields} seedRows={sectors} />;
+  return <AdminCrudPage title="Secteurs" resource="sectors" fields={fields} />;
 }

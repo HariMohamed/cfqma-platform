@@ -21,6 +21,39 @@ const getModel = (resource) => {
   return Model;
 };
 
+export const dashboardStats = asyncHandler(async (req, res) => {
+  const [
+    formationsCount,
+    sectorsCount,
+    newsCount,
+    galleryCount,
+    registrationsCount,
+    pendingRegistrationsCount,
+    contactMessagesCount,
+    unreadContactMessagesCount
+  ] = await Promise.all([
+    Formation.countDocuments(),
+    Sector.countDocuments(),
+    News.countDocuments(),
+    GalleryItem.countDocuments(),
+    Registration.countDocuments(),
+    Registration.countDocuments({ status: { $in: ['new', 'reviewing'] } }),
+    ContactMessage.countDocuments(),
+    ContactMessage.countDocuments({ status: 'new' })
+  ]);
+
+  sendData(res, {
+    formationsCount,
+    sectorsCount,
+    newsCount,
+    galleryCount,
+    registrationsCount,
+    pendingRegistrationsCount,
+    contactMessagesCount,
+    unreadContactMessagesCount
+  });
+});
+
 export const list = (resource) =>
   asyncHandler(async (req, res) => {
     sendData(res, await getModel(resource).find().sort('-createdAt'));

@@ -1,5 +1,4 @@
 import { AdminCrudPage } from '../features/admin/AdminCrudPage';
-import { formations } from '../data/seedData';
 
 const fields = [
   { name: 'title', label: 'Titre' },
@@ -17,5 +16,5 @@ const fields = [
 ];
 
 export function AdminFormations() {
-  return <AdminCrudPage title="Formations" resource="formations" fields={fields} seedRows={formations} />;
+  return <AdminCrudPage title="Formations" resource="formations" fields={fields} />;
 }

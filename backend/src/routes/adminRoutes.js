@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { login, me } from '../controllers/adminAuthController.js';
-import { create, list, remove, update } from '../controllers/adminCrudController.js';
+import { create, dashboardStats, list, remove, update } from '../controllers/adminCrudController.js';
 import { protect } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import {
@@ -22,6 +22,7 @@ export const adminRoutes = Router();
 
 adminRoutes.post('/auth/login', validate(loginSchema), login);
 adminRoutes.get('/me', protect, me);
+adminRoutes.get('/dashboard/stats', protect, dashboardStats);
 
 const resources = [
   ['formations', formationSchema, formationUpdateSchema],

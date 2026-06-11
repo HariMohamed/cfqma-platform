@@ -1,16 +1,30 @@
+import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ClipboardEdit, GraduationCap, Handshake, Images, Newspaper } from 'lucide-react';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
 import { PartnerMarquee } from '../components/PartnerMarquee';
 import { SectionHeader } from '../components/SectionHeader';
-import { centerFacts, formations, news, sectors, stats, trainingTypes } from '../data/seedData';
+import { EmptyState, ErrorState, LoadingState } from '../components/StateBlock';
+import { centerFacts, stats, trainingTypes } from '../data/seedData';
 import { useI18n } from '../hooks/useI18n';
+import { publicService } from '../services/publicService';
 
 export function Home() {
   const { t } = useI18n();
   const statLabels = t('home.stats');
   const shouldReduceMotion = useReducedMotion();
+  const [backendData, setBackendData] = useState({ formations: [], sectors: [], news: [] });
+  const [backendStatus, setBackendStatus] = useState('loading');
+
+  useEffect(() => {
+    Promise.all([publicService.getFormations(), publicService.getSectors(), publicService.getNews()])
+      .then(([formations, sectors, news]) => {
+        setBackendData({ formations, sectors, news });
+        setBackendStatus('ready');
+      })
+      .catch(() => setBackendStatus('error'));
+  }, []);
 
   return (
     <>
@@ -93,22 +107,24 @@ export function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <SectionHeader eyebrow={t('home.formationsEyebrow')} title={t('home.formationsTitle')} description={t('home.formationsDescription')} />
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
-          {formations.slice(0, 6).map((item) => (
-            <Card key={item.slug} to={`/formations/${item.slug}`} image={item.image} title={item.title} description={item.description} meta={item.type} />
-          ))}
-        </div>
+          <SectionHeader eyebrow={t('home.formationsEyebrow')} title={t('home.formationsTitle')} description={t('home.formationsDescription')} />
+        <BackendCardGrid
+          status={backendStatus}
+          items={backendData.formations.slice(0, 6)}
+          empty="Aucune formation publiée pour le moment."
+          render={(item) => <Card key={item.slug} to={`/formations/${item.slug}`} image={item.image} title={item.title} description={item.description} meta={item.type} />}
+        />
       </section>
 
       <section className="bg-white py-16 dark:bg-white/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader eyebrow={t('home.sectorsEyebrow')} title={t('home.sectorsTitle')} description={t('home.sectorsDescription')} />
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {sectors.map((item) => (
-              <Card key={item.slug} to={`/sectors/${item.slug}`} image={item.image} title={item.title} description={item.description} />
-            ))}
-          </div>
+          <BackendCardGrid
+            status={backendStatus}
+            items={backendData.sectors}
+            empty="Aucun secteur publié pour le moment."
+            render={(item) => <Card key={item.slug} to={`/sectors/${item.slug}`} image={item.image} title={item.title} description={item.description} />}
+          />
         </div>
       </section>
 
@@ -138,13 +154,28 @@ export function Home() {
             </div>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
-            {news.map((item) => (
-              <Card key={item.slug} to={`/news/${item.slug}`} image={item.coverImage} title={item.title} description={item.excerpt} meta={item.category} />
-            ))}
+            {backendStatus === 'loading' && <LoadingState />}
+            {backendStatus === 'error' && <ErrorState label="Impossible de charger les actualités depuis le backend." />}
+            {backendStatus === 'ready' && backendData.news.length === 0 && <EmptyState label="Aucune actualité publiée pour le moment." />}
+            {backendStatus === 'ready' &&
+              backendData.news.slice(0, 2).map((item) => (
+                <Card key={item.slug} to={`/news/${item.slug}`} image={item.coverImage} title={item.title} description={item.excerpt} meta={item.category} />
+              ))}
           </div>
         </div>
       </section>
 
     </>
+  );
+}
+
+function BackendCardGrid({ status, items, render, empty }) {
+  return (
+    <div className="mt-8">
+      {status === 'loading' && <LoadingState />}
+      {status === 'error' && <ErrorState label="Impossible de charger les données depuis le backend." />}
+      {status === 'ready' && items.length === 0 && <EmptyState label={empty} />}
+      {status === 'ready' && items.length > 0 && <div className="grid gap-6 md:grid-cols-3">{items.map(render)}</div>}
+    </div>
   );
 }
