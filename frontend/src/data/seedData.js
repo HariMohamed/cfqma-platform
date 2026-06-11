@@ -317,14 +317,6 @@ export const stats = [
   { label: 'Formations référencées', value: '16+' }
 ];
 
-export const contactInfo = {
-  phoneNumbers: ['+212 537 88 29 27', '+212 661 87 59 73'],
-  email: 'cfqma2012@gmail.com',
-  address: 'Avenue Mohammed VI, route de Kénitra, Salé',
-  facebook: 'https://www.facebook.com/cfqma.sale',
-  instagram: 'https://www.instagram.com/cfqmas'
-};
-
 export const centerFacts = [
   { label: 'Inauguration', value: '28 juillet 2012 / 8 Ramadan 1433' },
   { label: 'Financement', value: 'Fondation Mohammed V pour la Solidarité' },
@@ -376,17 +368,6 @@ export const mainTrainingFields = [
   'Zellige traditionnel',
   'Sculpture sur plâtre',
   'Maroquinerie'
-];
-
-export const partners = [
-  'Fondation Mohammed V pour la Solidarité',
-  'Ministère de l Artisanat',
-  'ANAPEC',
-  'CIH Bank',
-  'Banque Populaire',
-  'ODCO',
-  'Maroc PME',
-  'GIZ'
 ];
 
 export const accompanimentActions = [

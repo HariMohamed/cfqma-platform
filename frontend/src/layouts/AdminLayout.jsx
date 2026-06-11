@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { BookOpen, ClipboardList, Images, Layers, LayoutDashboard, LogOut, Mail, Newspaper } from 'lucide-react';
+import { BookOpen, ClipboardList, Handshake, Images, Layers, LayoutDashboard, LogOut, Mail, Newspaper, Settings } from 'lucide-react';
 import { ScrollToTop } from '../components/ScrollToTop';
 
 const links = [
@@ -8,6 +8,8 @@ const links = [
   ['Secteurs', '/admin/sectors', Layers],
   ['Actualités', '/admin/news', Newspaper],
   ['Galerie', '/admin/gallery', Images],
+  ['Partenaires', '/admin/partners', Handshake],
+  ['Paramètres', '/admin/settings', Settings],
   ['Messages', '/admin/contacts', Mail],
   ['Inscriptions', '/admin/registrations', ClipboardList]
 ];
@@ -22,9 +24,9 @@ export function AdminLayout() {
   return (
     <div className="min-h-screen bg-slate-100">
       <ScrollToTop />
-      <aside className="fixed inset-y-0 left-0 hidden w-64 bg-ink p-4 text-white lg:block">
+      <aside className="fixed inset-y-0 left-0 hidden w-64 overflow-y-auto bg-ink p-4 text-white lg:block">
         <h1 className="px-3 text-xl font-bold">CFQMA Admin</h1>
-        <nav className="mt-8 space-y-1">
+        <nav className="mt-8 space-y-1 pb-20">
           {links.map(([label, to, Icon]) => (
             <NavLink
               end={to === '/admin'}

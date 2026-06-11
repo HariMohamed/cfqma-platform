@@ -10,8 +10,9 @@ import {
   listNews,
   listSectors
 } from '../controllers/publicController.js';
+import { getPageContent, getSettings, listPartners } from '../controllers/contentController.js';
 import { validate } from '../middleware/validate.js';
-import { contactSchema, params, registrationSchema } from '../validators/schemas.js';
+import { contactSchema, pageContentPublicSchema, params, registrationSchema } from '../validators/schemas.js';
 
 export const publicRoutes = Router();
 
@@ -22,5 +23,8 @@ publicRoutes.get('/sectors/:slug', validate(params.slugParam), getSector);
 publicRoutes.get('/news', listNews);
 publicRoutes.get('/news/:slug', validate(params.slugParam), getNews);
 publicRoutes.get('/gallery', listGallery);
+publicRoutes.get('/settings', getSettings);
+publicRoutes.get('/partners', listPartners);
+publicRoutes.get('/page-content/:pageKey', validate(pageContentPublicSchema), getPageContent);
 publicRoutes.post('/contact', validate(contactSchema), createContact);
 publicRoutes.post('/registrations', validate(registrationSchema), createRegistration);

@@ -7,7 +7,8 @@
     "dev": "concurrently \"npm run dev --workspace frontend\" \"npm run dev --workspace backend\"",
     "build": "npm run build --workspace frontend",
     "start": "npm run start --workspace backend",
-    "seed": "npm run seed --workspace backend"
+    "seed": "npm run seed --workspace backend",
+    "seed:content": "npm run seed:content --workspace backend"
   },
   "workspaces": [
     "frontend",

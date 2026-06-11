@@ -5,8 +5,8 @@ import { Navbar, publicNavLinks } from '../components/Navbar';
 import { PartnerMarquee } from '../components/PartnerMarquee';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TopBar } from '../components/TopBar';
-import { contactInfo } from '../data/seedData';
 import { useI18n } from '../hooks/useI18n';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 const secondaryLinks = [
   ['nav.preRegistration', '/pre-registration'],
@@ -16,6 +16,8 @@ const secondaryLinks = [
 
 export function PublicLayout() {
   const { t } = useI18n();
+  const { settings } = useSiteContent();
+  const phoneNumbers = settings.phoneNumbers ?? [];
 
   return (
     <div className="min-h-screen bg-paper text-ink transition-colors dark:bg-[#101712] dark:text-white">
@@ -36,12 +38,16 @@ export function PublicLayout() {
             <h2 className="text-2xl font-bold">{t('brand.name')}</h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-white/70">{t('footer.description')}</p>
             <div className="mt-5 flex flex-wrap gap-3 text-sm">
-              <a href={contactInfo.facebook} target="_blank" rel="noopener noreferrer" aria-label={t('common.facebook')} className="inline-flex items-center gap-2 rounded-md bg-white/10 px-3 py-2 text-white/80 hover:text-white">
-                <Facebook size={14} aria-hidden="true" /> {t('common.facebook')}
-              </a>
-              <a href={contactInfo.instagram} target="_blank" rel="noopener noreferrer" aria-label={t('common.instagram')} className="inline-flex items-center gap-2 rounded-md bg-white/10 px-3 py-2 text-white/80 hover:text-white">
-                <Instagram size={14} aria-hidden="true" /> {t('common.instagram')}
-              </a>
+              {settings.facebookUrl && (
+                <a href={settings.facebookUrl} target="_blank" rel="noopener noreferrer" aria-label={t('common.facebook')} className="inline-flex items-center gap-2 rounded-md bg-white/10 px-3 py-2 text-white/80 hover:text-white">
+                  <Facebook size={14} aria-hidden="true" /> {t('common.facebook')}
+                </a>
+              )}
+              {settings.instagramUrl && (
+                <a href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label={t('common.instagram')} className="inline-flex items-center gap-2 rounded-md bg-white/10 px-3 py-2 text-white/80 hover:text-white">
+                  <Instagram size={14} aria-hidden="true" /> {t('common.instagram')}
+                </a>
+              )}
             </div>
           </div>
 
@@ -61,17 +67,21 @@ export function PublicLayout() {
           <div>
             <h3 className="font-semibold">{t('footer.contact')}</h3>
             <ul className="mt-3 space-y-2 text-sm text-white/70">
-              {contactInfo.phoneNumbers.map((phone) => (
+              {phoneNumbers.map((phone) => (
                 <li key={phone} className="flex gap-2">
                   <Phone size={16} /> <span dir="ltr">{phone}</span>
                 </li>
               ))}
-              <li className="flex gap-2">
-                <Mail size={16} /> {contactInfo.email}
-              </li>
-              <li className="flex gap-2">
-                <MapPin size={16} /> {contactInfo.address}
-              </li>
+              {settings.email && (
+                <li className="flex gap-2">
+                  <Mail size={16} /> {settings.email}
+                </li>
+              )}
+              {settings.address && (
+                <li className="flex gap-2">
+                  <MapPin size={16} /> {settings.address}
+                </li>
+              )}
             </ul>
           </div>
         </div>

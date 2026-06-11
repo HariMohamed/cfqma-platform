@@ -3,6 +3,7 @@ import { z } from 'zod';
 const idParam = z.object({ params: z.object({ id: z.string().min(1) }) });
 const slugParam = z.object({ params: z.object({ slug: z.string().min(1) }) });
 const idParams = z.object({ id: z.string().min(1) });
+const locale = z.enum(['fr', 'ar', 'en']);
 
 const nonEmptyPatch = (schema) =>
   schema.partial().refine((data) => Object.keys(data).length > 0, {
@@ -55,6 +56,26 @@ const galleryBody = z.object({
   isPublished: z.boolean().optional()
 });
 
+const partnerBody = z.object({
+  name: z.string().min(2),
+  logo: z.string().optional().or(z.literal('')),
+  url: z.string().optional().or(z.literal('')),
+  alt: z.string().optional().or(z.literal('')),
+  order: z.number().optional(),
+  isPublished: z.boolean().optional()
+});
+
+const settingsBody = z.object({
+  phoneNumbers: z.array(z.string().min(3)).optional(),
+  email: z.string().email().optional().or(z.literal('')),
+  address: z.string().optional().or(z.literal('')),
+  facebookUrl: z.string().optional().or(z.literal('')),
+  instagramUrl: z.string().optional().or(z.literal('')),
+  openingHours: z.string().optional().or(z.literal('')),
+  mapEmbedUrl: z.string().optional().or(z.literal('')),
+  defaultLanguage: locale.optional()
+});
+
 export const formationSchema = z.object({ body: formationBody });
 export const formationUpdateSchema = z.object({ params: idParams, body: nonEmptyPatch(formationBody) });
 export const sectorSchema = z.object({ body: sectorBody });
@@ -63,6 +84,23 @@ export const newsSchema = z.object({ body: newsBody });
 export const newsUpdateSchema = z.object({ params: idParams, body: nonEmptyPatch(newsBody) });
 export const gallerySchema = z.object({ body: galleryBody });
 export const galleryUpdateSchema = z.object({ params: idParams, body: nonEmptyPatch(galleryBody) });
+export const partnerSchema = z.object({ body: partnerBody });
+export const partnerUpdateSchema = z.object({ params: idParams, body: nonEmptyPatch(partnerBody) });
+export const settingsUpdateSchema = z.object({ body: nonEmptyPatch(settingsBody) });
+
+export const pageContentPublicSchema = z.object({
+  params: z.object({ pageKey: z.string().min(1) }),
+  query: z.object({ locale: locale.default('fr') })
+});
+
+export const pageContentAdminParams = z.object({
+  params: z.object({ pageKey: z.string().min(1), locale })
+});
+
+export const pageContentUpdateSchema = z.object({
+  params: z.object({ pageKey: z.string().min(1), locale }),
+  body: z.object({ sections: z.array(z.unknown()) })
+});
 
 export const contactStatusSchema = z.object({
   params: idParams,

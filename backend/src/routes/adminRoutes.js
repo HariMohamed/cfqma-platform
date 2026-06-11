@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { login, me } from '../controllers/adminAuthController.js';
 import { create, dashboardStats, list, remove, update } from '../controllers/adminCrudController.js';
+import { getAdminPageContent, getSettings, updateAdminPageContent, updateSettings } from '../controllers/contentController.js';
 import { protect } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import {
@@ -12,10 +13,15 @@ import {
   loginSchema,
   newsSchema,
   newsUpdateSchema,
+  pageContentAdminParams,
+  pageContentUpdateSchema,
+  partnerSchema,
+  partnerUpdateSchema,
   params,
   registrationStatusSchema,
   sectorSchema,
-  sectorUpdateSchema
+  sectorUpdateSchema,
+  settingsUpdateSchema
 } from '../validators/schemas.js';
 
 export const adminRoutes = Router();
@@ -23,12 +29,17 @@ export const adminRoutes = Router();
 adminRoutes.post('/auth/login', validate(loginSchema), login);
 adminRoutes.get('/me', protect, me);
 adminRoutes.get('/dashboard/stats', protect, dashboardStats);
+adminRoutes.get('/settings', protect, getSettings);
+adminRoutes.patch('/settings', protect, validate(settingsUpdateSchema), updateSettings);
+adminRoutes.get('/page-content/:pageKey/:locale', protect, validate(pageContentAdminParams), getAdminPageContent);
+adminRoutes.patch('/page-content/:pageKey/:locale', protect, validate(pageContentUpdateSchema), updateAdminPageContent);
 
 const resources = [
   ['formations', formationSchema, formationUpdateSchema],
   ['sectors', sectorSchema, sectorUpdateSchema],
   ['news', newsSchema, newsUpdateSchema],
-  ['gallery', gallerySchema, galleryUpdateSchema]
+  ['gallery', gallerySchema, galleryUpdateSchema],
+  ['partners', partnerSchema, partnerUpdateSchema]
 ];
 
 for (const [resource, schema, updateSchema] of resources) {

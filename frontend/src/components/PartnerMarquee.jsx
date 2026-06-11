@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { ExternalLink } from 'lucide-react';
-import { partners } from '../data/partners';
 import { useI18n } from '../hooks/useI18n';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 export function PartnerMarquee({ compact = false, showHeader = true, tone = 'default', className = '', showNames = false }) {
   const { t } = useI18n();
+  const { partners, status } = useSiteContent();
   const repeatedPartners = [...partners, ...partners];
   const isDarkTone = tone === 'dark' || tone === 'green';
   const edgeClass = tone === 'green' ? 'from-[#12382d] dark:from-[#0b231c]' : tone === 'dark' ? 'from-ink' : 'from-paper dark:from-[#101712]';
@@ -23,11 +24,19 @@ export function PartnerMarquee({ compact = false, showHeader = true, tone = 'def
       <div className={`relative ${showHeader ? 'mt-8' : ''} overflow-hidden`} dir="ltr" aria-label={t('partners.title')}>
         <div className={`pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r ${edgeClass} to-transparent sm:w-28`} />
         <div className={`pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l ${edgeClass} to-transparent sm:w-28`} />
-        <div className="partner-marquee-track flex w-max gap-5 py-2 hover:[animation-play-state:paused] motion-reduce:transform-none">
-          {repeatedPartners.map((partner, index) => (
-            <PartnerLogoCard key={`${partner.name}-${index}`} partner={partner} compact={compact} showName={showNames} />
-          ))}
-        </div>
+        {partners.length === 0 ? (
+          <div className="flex justify-center py-2">
+            <div className="inline-flex h-20 min-w-[220px] items-center justify-center rounded-lg bg-white px-5 text-center text-sm font-bold text-ink shadow-sm ring-1 ring-ink/10">
+              {status === 'loading' ? 'Chargement des partenaires...' : 'Aucun partenaire publié.'}
+            </div>
+          </div>
+        ) : (
+          <div className="partner-marquee-track flex w-max gap-5 py-2 hover:[animation-play-state:paused] motion-reduce:transform-none">
+            {repeatedPartners.map((partner, index) => (
+              <PartnerLogoCard key={`${partner.name}-${index}`} partner={partner} compact={compact} showName={showNames} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

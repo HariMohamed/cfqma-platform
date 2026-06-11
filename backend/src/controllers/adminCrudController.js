@@ -2,6 +2,7 @@ import { ContactMessage } from '../models/ContactMessage.js';
 import { Formation } from '../models/Formation.js';
 import { GalleryItem } from '../models/GalleryItem.js';
 import { News } from '../models/News.js';
+import { Partner } from '../models/Partner.js';
 import { Registration } from '../models/Registration.js';
 import { Sector } from '../models/Sector.js';
 import { AppError, asyncHandler, sendData } from '../utils/http.js';
@@ -11,6 +12,7 @@ const models = {
   sectors: Sector,
   news: News,
   gallery: GalleryItem,
+  partners: Partner,
   'contact-messages': ContactMessage,
   registrations: Registration
 };

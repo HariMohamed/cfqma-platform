@@ -23,6 +23,8 @@ import { AdminFormations } from '../pages/AdminFormations';
 import { AdminSectors } from '../pages/AdminSectors';
 import { AdminNews } from '../pages/AdminNews';
 import { AdminGallery } from '../pages/AdminGallery';
+import { AdminPartners } from '../pages/AdminPartners';
+import { AdminSettings } from '../pages/AdminSettings';
 import { AdminContacts } from '../pages/AdminContacts';
 import { AdminRegistrations } from '../pages/AdminRegistrations';
 import { NotFound } from '../pages/NotFound';
@@ -62,6 +64,8 @@ export const router = createBrowserRouter([
           { path: 'sectors', element: <AdminSectors /> },
           { path: 'news', element: <AdminNews /> },
           { path: 'gallery', element: <AdminGallery /> },
+          { path: 'partners', element: <AdminPartners /> },
+          { path: 'settings', element: <AdminSettings /> },
           { path: 'contacts', element: <AdminContacts /> },
           { path: 'registrations', element: <AdminRegistrations /> }
         ]
