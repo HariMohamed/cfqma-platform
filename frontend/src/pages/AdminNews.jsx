@@ -5,7 +5,7 @@ const fields = [
   { name: 'slug', label: 'Slug', required: false },
   { name: 'excerpt', label: 'Extrait', type: 'textarea' },
   { name: 'content', label: 'Contenu', type: 'textarea' },
-  { name: 'coverImage', label: 'Image de couverture', required: false },
+  { name: 'coverImage', label: 'Image de couverture', type: 'image', required: false },
   { name: 'category', label: 'Categorie', required: false },
   { name: 'status', label: 'Statut draft/published', defaultValue: 'draft' },
   { name: 'publishedAt', label: 'Date publication', required: false }

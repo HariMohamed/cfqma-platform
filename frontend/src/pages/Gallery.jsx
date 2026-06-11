@@ -3,6 +3,7 @@ import { EmptyState, ErrorState, LoadingState } from '../components/StateBlock';
 import { SectionHeader } from '../components/SectionHeader';
 import { useI18n } from '../hooks/useI18n';
 import { publicService } from '../services/publicService';
+import { mediaUrl } from '../utils/media';
 
 export function Gallery() {
   const { t } = useI18n();
@@ -31,7 +32,7 @@ export function Gallery() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((item) => (
               <article key={`${item.title}-${item.imageUrl}`} className="overflow-hidden rounded-lg bg-white shadow-soft ring-1 ring-ink/5 dark:bg-white/10 dark:ring-white/10">
-                <img src={item.imageUrl} alt={item.alt || item.title} className="h-56 w-full object-cover" loading="lazy" />
+                <img src={mediaUrl(item.imageUrl)} alt={item.alt || item.title} className="h-56 w-full object-cover" loading="lazy" />
                 <div className="p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-craft">{item.category}</p>
                   <h2 className="mt-2 text-xl font-bold text-ink dark:text-white">{item.title}</h2>

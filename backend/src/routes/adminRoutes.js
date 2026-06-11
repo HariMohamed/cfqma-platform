@@ -2,7 +2,9 @@ import { Router } from 'express';
 import { login, me } from '../controllers/adminAuthController.js';
 import { create, dashboardStats, list, remove, update } from '../controllers/adminCrudController.js';
 import { getAdminPageContent, getSettings, updateAdminPageContent, updateSettings } from '../controllers/contentController.js';
+import { uploadImage } from '../controllers/uploadController.js';
 import { protect } from '../middleware/auth.js';
+import { imageUpload } from '../middleware/upload.js';
 import { validate } from '../middleware/validate.js';
 import {
   contactStatusSchema,
@@ -29,6 +31,7 @@ export const adminRoutes = Router();
 adminRoutes.post('/auth/login', validate(loginSchema), login);
 adminRoutes.get('/me', protect, me);
 adminRoutes.get('/dashboard/stats', protect, dashboardStats);
+adminRoutes.post('/upload', protect, imageUpload.single('image'), uploadImage);
 adminRoutes.get('/settings', protect, getSettings);
 adminRoutes.patch('/settings', protect, validate(settingsUpdateSchema), updateSettings);
 adminRoutes.get('/page-content/:pageKey/:locale', protect, validate(pageContentAdminParams), getAdminPageContent);

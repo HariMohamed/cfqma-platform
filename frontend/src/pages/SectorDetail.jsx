@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Card } from '../components/Card';
 import { ErrorState, LoadingState } from '../components/StateBlock';
 import { publicService } from '../services/publicService';
+import { mediaUrl } from '../utils/media';
 
 export function SectorDetail() {
   const { slug } = useParams();
@@ -26,7 +27,7 @@ export function SectorDetail() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-        <img src={state.sector.image} alt={state.sector.title} className="rounded-lg object-cover shadow-soft" />
+        <img src={mediaUrl(state.sector.image)} alt={state.sector.title} className="rounded-lg object-cover shadow-soft" />
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-craft">Secteur</p>
           <h1 className="mt-3 text-4xl font-bold">{state.sector.title}</h1>

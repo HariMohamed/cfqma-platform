@@ -2,7 +2,7 @@ import { AdminCrudPage } from '../features/admin/AdminCrudPage';
 
 const fields = [
   { name: 'title', label: 'Titre' },
-  { name: 'imageUrl', label: 'Image URL' },
+  { name: 'imageUrl', label: 'Image', type: 'image' },
   { name: 'alt', label: 'Texte alternatif' },
   { name: 'category', label: 'Categorie', required: false },
   { name: 'description', label: 'Description', type: 'textarea', required: false },

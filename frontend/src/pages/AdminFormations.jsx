@@ -11,7 +11,7 @@ const fields = [
   { name: 'requirements', label: 'Conditions (separees par virgule)', array: true, required: false },
   { name: 'skills', label: 'Competences (separees par virgule)', array: true, required: false },
   { name: 'opportunities', label: 'Debouches (separes par virgule)', array: true, required: false },
-  { name: 'image', label: 'Image URL', required: false },
+  { name: 'image', label: 'Image', type: 'image', required: false },
   { name: 'isPublished', label: 'Publiee', type: 'checkbox', defaultValue: true, required: false }
 ];
 

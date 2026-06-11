@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ErrorState, LoadingState } from '../components/StateBlock';
 import { publicService } from '../services/publicService';
+import { mediaUrl } from '../utils/media';
 import { NotFound } from './NotFound';
 
 export function NewsDetail() {
@@ -28,7 +29,7 @@ export function NewsDetail() {
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-      {item.coverImage && <img src={item.coverImage} alt={item.title} className="h-80 w-full rounded-lg object-cover shadow-soft" />}
+      {item.coverImage && <img src={mediaUrl(item.coverImage)} alt={item.title} className="h-80 w-full rounded-lg object-cover shadow-soft" />}
       <p className="mt-8 text-sm font-semibold uppercase tracking-[0.16em] text-craft">{item.category}</p>
       <h1 className="mt-3 text-4xl font-bold text-ink dark:text-white">{item.title}</h1>
       <p className="mt-6 whitespace-pre-line text-lg leading-8 text-ink/75 dark:text-white/75">{item.content}</p>

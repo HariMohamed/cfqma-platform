@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '../../components/Button';
+import { ImageUpload } from '../../components/ImageUpload';
 import { ErrorState, LoadingState } from '../../components/StateBlock';
 import { adminService } from '../../services/adminService';
 import { AdminTable } from './AdminTable';
@@ -102,6 +103,9 @@ export function AdminCrudPage({ title, resource, fields }) {
 }
 
 function Field({ field, value, onChange }) {
+  if (field.type === 'image') {
+    return <ImageUpload label={field.label} value={value} onChange={onChange} required={field.required !== false} />;
+  }
   if (field.type === 'textarea') {
     return (
       <label className="block text-sm font-semibold md:col-span-2">

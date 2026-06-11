@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { useI18n } from '../hooks/useI18n';
 import { useSiteContent } from '../hooks/useSiteContent';
+import { mediaUrl } from '../utils/media';
 
 export function PartnerMarquee({ compact = false, showHeader = true, tone = 'default', className = '', showNames = false }) {
   const { t } = useI18n();
@@ -47,7 +48,7 @@ export function PartnerLogoCard({ partner, compact = false, showName = false }) 
   const hasLogo = partner.logo && !imageFailed;
   const cardClass = `${compact ? 'h-16 min-w-[150px] px-4' : showName ? 'h-28 min-w-[220px] px-5 py-4' : 'h-24 min-w-[210px] px-6'} relative inline-flex flex-col items-center justify-center rounded-lg bg-white text-center text-sm font-bold text-ink shadow-sm ring-1 ring-ink/10 transition hover:-translate-y-1 hover:shadow-soft motion-reduce:transform-none dark:bg-white dark:text-ink`;
   const content = hasLogo ? (
-    <img src={partner.logo} alt={partner.alt} className={`${compact ? 'max-h-10' : 'max-h-14'} max-w-[150px] object-contain`} loading="lazy" onError={() => setImageFailed(true)} />
+    <img src={mediaUrl(partner.logo)} alt={partner.alt} className={`${compact ? 'max-h-10' : 'max-h-14'} max-w-[150px] object-contain`} loading="lazy" onError={() => setImageFailed(true)} />
   ) : (
     <span className="leading-5">{partner.name}</span>
   );
