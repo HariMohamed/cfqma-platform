@@ -25,12 +25,19 @@ export const listPartners = asyncHandler(async (req, res) => {
 });
 
 export const getPageContent = asyncHandler(async (req, res) => {
+  const requestedLocale = req.query.locale || req.params.locale || 'fr';
   const content = await PageContent.findOne({
     pageKey: req.params.pageKey,
-    locale: req.query.locale || req.params.locale || 'fr'
+    locale: requestedLocale
   });
-  if (!content) throw new AppError('Page content not found', 404);
-  sendData(res, content);
+  if (content) {
+    sendData(res, content);
+    return;
+  }
+
+  const fallback = requestedLocale === 'fr' ? null : await PageContent.findOne({ pageKey: req.params.pageKey, locale: 'fr' });
+  if (!fallback) throw new AppError('Page content not found', 404);
+  sendData(res, { ...fallback.toObject(), requestedLocale, fallbackLocale: true });
 });
 
 export const getAdminPageContent = asyncHandler(async (req, res) => {

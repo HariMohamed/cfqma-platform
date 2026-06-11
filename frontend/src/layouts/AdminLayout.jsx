@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { BookOpen, ClipboardList, Handshake, Images, Layers, LayoutDashboard, LogOut, Mail, Newspaper, Settings } from 'lucide-react';
+import { BookOpen, ClipboardList, FileText, Handshake, Images, Layers, LayoutDashboard, LogOut, Mail, Newspaper, Settings } from 'lucide-react';
 import { ScrollToTop } from '../components/ScrollToTop';
 
 const links = [
@@ -10,6 +10,7 @@ const links = [
   ['Galerie', '/admin/gallery', Images],
   ['Partenaires', '/admin/partners', Handshake],
   ['Paramètres', '/admin/settings', Settings],
+  ['Page Content', '/admin/page-content', FileText],
   ['Messages', '/admin/contacts', Mail],
   ['Inscriptions', '/admin/registrations', ClipboardList]
 ];

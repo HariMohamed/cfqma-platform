@@ -25,6 +25,7 @@ import { AdminNews } from '../pages/AdminNews';
 import { AdminGallery } from '../pages/AdminGallery';
 import { AdminPartners } from '../pages/AdminPartners';
 import { AdminSettings } from '../pages/AdminSettings';
+import { AdminPageContent } from '../pages/AdminPageContent';
 import { AdminContacts } from '../pages/AdminContacts';
 import { AdminRegistrations } from '../pages/AdminRegistrations';
 import { NotFound } from '../pages/NotFound';
@@ -66,6 +67,7 @@ export const router = createBrowserRouter([
           { path: 'gallery', element: <AdminGallery /> },
           { path: 'partners', element: <AdminPartners /> },
           { path: 'settings', element: <AdminSettings /> },
+          { path: 'page-content', element: <AdminPageContent /> },
           { path: 'contacts', element: <AdminContacts /> },
           { path: 'registrations', element: <AdminRegistrations /> }
         ]
