@@ -12,32 +12,54 @@ dotenv.config();
 
 await connectDB();
 
-await Promise.all([
-  Formation.deleteMany(),
-  Sector.deleteMany(),
-  News.deleteMany(),
-  GalleryItem.deleteMany()
+async function seedMissing(Model, items, getFilter) {
+  let inserted = 0;
+
+  for (const item of items) {
+    const result = await Model.updateOne(getFilter(item), { $setOnInsert: item }, { upsert: true });
+    if (result.upsertedCount) inserted += result.upsertedCount;
+  }
+
+  return inserted;
+}
+
+const [formationsInserted, sectorsInserted, newsInserted, galleryInserted] = await Promise.all([
+  seedMissing(Formation, formations, (item) => ({ slug: item.slug })),
+  seedMissing(Sector, sectors, (item) => ({ slug: item.slug })),
+  seedMissing(News, news, (item) => ({ slug: item.slug })),
+  seedMissing(GalleryItem, galleryItems, (item) => ({ title: item.title, imageUrl: item.imageUrl }))
 ]);
 
-await Formation.insertMany(formations);
-await Sector.insertMany(sectors);
-await News.insertMany(news);
-await GalleryItem.insertMany(galleryItems);
+let adminInserted = 0;
 
 if (process.env.ADMIN_SEED_EMAIL && process.env.ADMIN_SEED_PASSWORD) {
-  const passwordHash = await bcrypt.hash(process.env.ADMIN_SEED_PASSWORD, 12);
-  await AdminUser.findOneAndUpdate(
-    { email: process.env.ADMIN_SEED_EMAIL.toLowerCase() },
-    {
+  const email = process.env.ADMIN_SEED_EMAIL.toLowerCase();
+  const existingAdmin = await AdminUser.findOne({ email });
+
+  if (!existingAdmin) {
+    const passwordHash = await bcrypt.hash(process.env.ADMIN_SEED_PASSWORD, 12);
+    await AdminUser.create({
       name: process.env.ADMIN_SEED_NAME || 'CFQMA Admin',
-      email: process.env.ADMIN_SEED_EMAIL.toLowerCase(),
+      email,
       passwordHash,
       role: 'admin',
       isActive: true
-    },
-    { upsert: true, new: true }
-  );
+    });
+    adminInserted = 1;
+  }
 }
 
-console.log('Seed completed');
+console.log(
+  JSON.stringify({
+    seedMode: 'safe-idempotent',
+    destructiveOperations: false,
+    inserted: {
+      formations: formationsInserted,
+      sectors: sectorsInserted,
+      news: newsInserted,
+      galleryItems: galleryInserted,
+      adminUsers: adminInserted
+    }
+  })
+);
 process.exit(0);
