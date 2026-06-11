@@ -1,0 +1,14 @@
+export class AppError extends Error {
+  constructor(message, statusCode = 500) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+export function asyncHandler(fn) {
+  return (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+}
+
+export function sendData(res, data, status = 200) {
+  res.status(status).json({ success: true, data });
+}
