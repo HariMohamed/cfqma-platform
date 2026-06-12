@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const idParam = z.object({ params: z.object({ id: z.string().min(1) }) });
 const slugParam = z.object({ params: z.object({ slug: z.string().min(1) }) });
+const trackingCodeParam = z.object({ params: z.object({ trackingCode: z.string().trim().toUpperCase().regex(/^CFQMA-\d{4}-\d{5}$/) }) });
 const idParams = z.object({ id: z.string().min(1) });
 const locale = z.enum(['fr', 'ar', 'en']);
 
@@ -10,7 +11,7 @@ const nonEmptyPatch = (schema) =>
     message: 'At least one field is required'
   });
 
-export const params = { idParam, slugParam };
+export const params = { idParam, slugParam, trackingCodeParam };
 
 const formationBody = z.object({
   title: z.string().min(2),
@@ -109,7 +110,10 @@ export const contactStatusSchema = z.object({
 
 export const registrationStatusSchema = z.object({
   params: idParams,
-  body: z.object({ status: z.enum(['new', 'reviewing', 'accepted', 'rejected']) })
+  body: z.object({
+    status: z.enum(['new', 'reviewing', 'accepted', 'rejected']),
+    publicMessage: z.string().max(500).optional().or(z.literal(''))
+  })
 });
 
 export const contactSchema = z.object({

@@ -14,5 +14,6 @@ export const publicService = {
   getPartners: async () => unwrap(await api.get('/partners')),
   getPageContent: async (pageKey, locale = 'fr') => unwrap(await api.get(`/page-content/${pageKey}`, { params: { locale } })),
   sendContact: async (payload) => unwrap(await api.post('/contact', payload)),
-  sendRegistration: async (payload) => unwrap(await api.post('/registrations', payload))
+  sendRegistration: async (payload) => unwrap(await api.post('/registrations', payload)),
+  trackRegistration: async (trackingCode) => unwrap(await api.get(`/registrations/track/${encodeURIComponent(trackingCode)}`))
 };

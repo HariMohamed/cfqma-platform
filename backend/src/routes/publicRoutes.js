@@ -8,7 +8,8 @@ import {
   listFormations,
   listGallery,
   listNews,
-  listSectors
+  listSectors,
+  trackRegistration
 } from '../controllers/publicController.js';
 import { getPageContent, getSettings, listPartners } from '../controllers/contentController.js';
 import { validate } from '../middleware/validate.js';
@@ -27,4 +28,5 @@ publicRoutes.get('/settings', getSettings);
 publicRoutes.get('/partners', listPartners);
 publicRoutes.get('/page-content/:pageKey', validate(pageContentPublicSchema), getPageContent);
 publicRoutes.post('/contact', validate(contactSchema), createContact);
+publicRoutes.get('/registrations/track/:trackingCode', validate(params.trackingCodeParam), trackRegistration);
 publicRoutes.post('/registrations', validate(registrationSchema), createRegistration);

@@ -44,6 +44,54 @@ export const createContact = asyncHandler(async (req, res) => {
   sendData(res, await ContactMessage.create(req.body), 201);
 });
 
+const createRegistrationWithTracking = async (payload) => {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      return await Registration.create(payload);
+    } catch (error) {
+      if (error?.code !== 11000 || !error?.keyPattern?.trackingCode) throw error;
+    }
+  }
+
+  throw new AppError('Could not generate a unique tracking code', 500);
+};
+
+const maskName = (fullName = '') =>
+  fullName
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => `${part[0] ?? ''}${part.length > 1 ? '***' : ''}`)
+    .join(' ');
+
 export const createRegistration = asyncHandler(async (req, res) => {
-  sendData(res, await Registration.create(req.body), 201);
+  const registration = await createRegistrationWithTracking(req.body);
+  sendData(
+    res,
+    {
+      trackingCode: registration.trackingCode,
+      status: registration.status,
+      createdAt: registration.createdAt
+    },
+    201
+  );
+});
+
+export const trackRegistration = asyncHandler(async (req, res) => {
+  const trackingCode = req.params.trackingCode.toUpperCase();
+  const registration = await Registration.findOne({ trackingCode })
+    .select('trackingCode fullName desiredFormation status publicMessage createdAt updatedAt')
+    .lean();
+
+  if (!registration) throw new AppError('Registration not found', 404);
+
+  sendData(res, {
+    trackingCode: registration.trackingCode,
+    fullName: maskName(registration.fullName),
+    desiredFormation: registration.desiredFormation,
+    status: registration.status,
+    createdAt: registration.createdAt,
+    updatedAt: registration.updatedAt,
+    publicMessage: registration.publicMessage || ''
+  });
 });
