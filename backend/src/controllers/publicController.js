@@ -1,4 +1,5 @@
 import { ContactMessage } from '../models/ContactMessage.js';
+import { Event } from '../models/Event.js';
 import { Formation } from '../models/Formation.js';
 import { GalleryItem } from '../models/GalleryItem.js';
 import { News } from '../models/News.js';
@@ -33,6 +34,16 @@ export const listNews = asyncHandler(async (req, res) => {
 export const getNews = asyncHandler(async (req, res) => {
   const item = await News.findOne({ slug: req.params.slug, status: 'published' });
   if (!item) throw new AppError('News not found', 404);
+  sendData(res, item);
+});
+
+export const listEvents = asyncHandler(async (req, res) => {
+  sendData(res, await Event.find({ isPublished: true }).sort('-date'));
+});
+
+export const getEvent = asyncHandler(async (req, res) => {
+  const item = await Event.findOne({ slug: req.params.slug, isPublished: true });
+  if (!item) throw new AppError('Event not found', 404);
   sendData(res, item);
 });
 

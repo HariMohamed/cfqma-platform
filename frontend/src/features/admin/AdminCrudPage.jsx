@@ -122,6 +122,20 @@ function Field({ field, value, onChange }) {
       </label>
     );
   }
+  if (field.type === 'select') {
+    return (
+      <label className="block text-sm font-semibold">
+        {field.label}
+        <select required={field.required !== false} value={value} onChange={(event) => onChange(event.target.value)} className="mt-2 w-full rounded-md border px-3 py-2 focus-ring">
+          {(field.options ?? []).map((option) => (
+            <option key={option.value ?? option} value={option.value ?? option}>
+              {option.label ?? option}
+            </option>
+          ))}
+        </select>
+      </label>
+    );
+  }
   return (
     <label className="block text-sm font-semibold">
       {field.label}
@@ -143,6 +157,7 @@ function normalizePayload(form, fields) {
 
 function valueForInput(value, field) {
   if (Array.isArray(value)) return value.join(', ');
+  if (field.type === 'date' && value) return String(value).slice(0, 10);
   if (field.type === 'checkbox') return Boolean(value);
   return value ?? '';
 }

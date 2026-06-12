@@ -6,6 +6,7 @@ const statCards = [
   ['formationsCount', 'Formations'],
   ['sectorsCount', 'Secteurs'],
   ['newsCount', 'Actualités'],
+  ['eventsCount', 'Événements'],
   ['galleryCount', 'Images'],
   ['registrationsCount', 'Pré-inscriptions'],
   ['pendingRegistrationsCount', 'Demandes à traiter'],

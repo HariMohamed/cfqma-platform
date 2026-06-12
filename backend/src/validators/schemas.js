@@ -48,6 +48,22 @@ const newsBody = z.object({
   publishedAt: z.string().optional()
 });
 
+const eventBody = z.object({
+  title: z.string().min(2),
+  slug: z.string().optional(),
+  type: z.enum(['exhibition', 'event', 'workshop', 'announcement']).optional(),
+  excerpt: z.string().optional().or(z.literal('')),
+  description: z.string().optional().or(z.literal('')),
+  date: z.string().min(1),
+  endDate: z.string().optional().or(z.literal('')),
+  location: z.string().optional().or(z.literal('')),
+  coverImage: z.string().optional().or(z.literal('')),
+  galleryImages: z.array(z.string()).optional(),
+  participants: z.array(z.string()).optional(),
+  relatedFormations: z.array(z.string()).optional(),
+  isPublished: z.boolean().optional()
+});
+
 const galleryBody = z.object({
   title: z.string().min(2),
   imageUrl: z.string().min(2),
@@ -83,6 +99,8 @@ export const sectorSchema = z.object({ body: sectorBody });
 export const sectorUpdateSchema = z.object({ params: idParams, body: nonEmptyPatch(sectorBody) });
 export const newsSchema = z.object({ body: newsBody });
 export const newsUpdateSchema = z.object({ params: idParams, body: nonEmptyPatch(newsBody) });
+export const eventSchema = z.object({ body: eventBody });
+export const eventUpdateSchema = z.object({ params: idParams, body: nonEmptyPatch(eventBody) });
 export const gallerySchema = z.object({ body: galleryBody });
 export const galleryUpdateSchema = z.object({ params: idParams, body: nonEmptyPatch(galleryBody) });
 export const partnerSchema = z.object({ body: partnerBody });

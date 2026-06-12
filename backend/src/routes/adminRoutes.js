@@ -8,6 +8,8 @@ import { imageUpload } from '../middleware/upload.js';
 import { validate } from '../middleware/validate.js';
 import {
   contactStatusSchema,
+  eventSchema,
+  eventUpdateSchema,
   formationSchema,
   formationUpdateSchema,
   gallerySchema,
@@ -41,6 +43,7 @@ const resources = [
   ['formations', formationSchema, formationUpdateSchema],
   ['sectors', sectorSchema, sectorUpdateSchema],
   ['news', newsSchema, newsUpdateSchema],
+  ['events', eventSchema, eventUpdateSchema],
   ['gallery', gallerySchema, galleryUpdateSchema],
   ['partners', partnerSchema, partnerUpdateSchema]
 ];

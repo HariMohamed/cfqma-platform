@@ -13,6 +13,8 @@ const Sectors = lazyPage(() => import('../pages/Sectors'), 'Sectors');
 const SectorDetail = lazyPage(() => import('../pages/SectorDetail'), 'SectorDetail');
 const News = lazyPage(() => import('../pages/News'), 'News');
 const NewsDetail = lazyPage(() => import('../pages/NewsDetail'), 'NewsDetail');
+const Events = lazyPage(() => import('../pages/Events'), 'Events');
+const EventDetail = lazyPage(() => import('../pages/EventDetail'), 'EventDetail');
 const Contact = lazyPage(() => import('../pages/Contact'), 'Contact');
 const Gallery = lazyPage(() => import('../pages/Gallery'), 'Gallery');
 const PreRegistration = lazyPage(() => import('../pages/PreRegistration'), 'PreRegistration');
@@ -25,6 +27,7 @@ const AdminDashboard = lazyPage(() => import('../pages/AdminDashboard'), 'AdminD
 const AdminFormations = lazyPage(() => import('../pages/AdminFormations'), 'AdminFormations');
 const AdminSectors = lazyPage(() => import('../pages/AdminSectors'), 'AdminSectors');
 const AdminNews = lazyPage(() => import('../pages/AdminNews'), 'AdminNews');
+const AdminEvents = lazyPage(() => import('../pages/AdminEvents'), 'AdminEvents');
 const AdminGallery = lazyPage(() => import('../pages/AdminGallery'), 'AdminGallery');
 const AdminPartners = lazyPage(() => import('../pages/AdminPartners'), 'AdminPartners');
 const AdminSettings = lazyPage(() => import('../pages/AdminSettings'), 'AdminSettings');
@@ -45,6 +48,8 @@ export const router = createBrowserRouter([
       { path: '/sectors/:slug', element: routeElement(SectorDetail) },
       { path: '/news', element: routeElement(News) },
       { path: '/news/:slug', element: routeElement(NewsDetail) },
+      { path: '/events', element: routeElement(Events) },
+      { path: '/events/:slug', element: routeElement(EventDetail) },
       { path: '/gallery', element: routeElement(Gallery) },
       { path: '/contact', element: routeElement(Contact) },
       { path: '/pre-registration', element: routeElement(PreRegistration) },
@@ -67,6 +72,7 @@ export const router = createBrowserRouter([
           { path: 'formations', element: routeElement(AdminFormations) },
           { path: 'sectors', element: routeElement(AdminSectors) },
           { path: 'news', element: routeElement(AdminNews) },
+          { path: 'events', element: routeElement(AdminEvents) },
           { path: 'gallery', element: routeElement(AdminGallery) },
           { path: 'partners', element: routeElement(AdminPartners) },
           { path: 'settings', element: routeElement(AdminSettings) },

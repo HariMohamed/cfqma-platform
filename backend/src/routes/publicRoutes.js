@@ -2,9 +2,11 @@ import { Router } from 'express';
 import {
   createContact,
   createRegistration,
+  getEvent,
   getFormation,
   getNews,
   getSector,
+  listEvents,
   listFormations,
   listGallery,
   listNews,
@@ -23,6 +25,8 @@ publicRoutes.get('/sectors', listSectors);
 publicRoutes.get('/sectors/:slug', validate(params.slugParam), getSector);
 publicRoutes.get('/news', listNews);
 publicRoutes.get('/news/:slug', validate(params.slugParam), getNews);
+publicRoutes.get('/events', listEvents);
+publicRoutes.get('/events/:slug', validate(params.slugParam), getEvent);
 publicRoutes.get('/gallery', listGallery);
 publicRoutes.get('/settings', getSettings);
 publicRoutes.get('/partners', listPartners);

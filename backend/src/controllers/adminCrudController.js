@@ -1,4 +1,5 @@
 import { ContactMessage } from '../models/ContactMessage.js';
+import { Event } from '../models/Event.js';
 import { Formation } from '../models/Formation.js';
 import { GalleryItem } from '../models/GalleryItem.js';
 import { News } from '../models/News.js';
@@ -11,6 +12,7 @@ const models = {
   formations: Formation,
   sectors: Sector,
   news: News,
+  events: Event,
   gallery: GalleryItem,
   partners: Partner,
   'contact-messages': ContactMessage,
@@ -28,6 +30,7 @@ export const dashboardStats = asyncHandler(async (req, res) => {
     formationsCount,
     sectorsCount,
     newsCount,
+    eventsCount,
     galleryCount,
     registrationsCount,
     pendingRegistrationsCount,
@@ -37,6 +40,7 @@ export const dashboardStats = asyncHandler(async (req, res) => {
     Formation.countDocuments(),
     Sector.countDocuments(),
     News.countDocuments(),
+    Event.countDocuments(),
     GalleryItem.countDocuments(),
     Registration.countDocuments(),
     Registration.countDocuments({ status: { $in: ['new', 'reviewing'] } }),
@@ -48,6 +52,7 @@ export const dashboardStats = asyncHandler(async (req, res) => {
     formationsCount,
     sectorsCount,
     newsCount,
+    eventsCount,
     galleryCount,
     registrationsCount,
     pendingRegistrationsCount,

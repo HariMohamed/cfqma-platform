@@ -11,6 +11,7 @@ export const publicNavLinks = [
   ['nav.admission', '/admission'],
   ['nav.accompaniment', '/accompagnement'],
   ['nav.news', '/news'],
+  ['nav.events', '/events'],
   ['nav.contact', '/contact']
 ];
 

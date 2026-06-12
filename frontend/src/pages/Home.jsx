@@ -17,7 +17,10 @@ export function Home() {
   const [contentStatus, setContentStatus] = useState('loading');
   const [backendData, setBackendData] = useState({ formations: [], sectors: [], news: [] });
   const [backendStatus, setBackendStatus] = useState('loading');
+  const [events, setEvents] = useState([]);
+  const [eventsStatus, setEventsStatus] = useState('loading');
   const content = useMemo(() => mergeHomeContent(fallback, pageContent, language), [fallback, pageContent, language]);
+  const eventsCopy = useMemo(() => getHomeEventsCopy(language), [language]);
 
   useEffect(() => {
     let active = true;
@@ -48,6 +51,17 @@ export function Home() {
         setBackendStatus('ready');
       })
       .catch(() => setBackendStatus('error'));
+  }, []);
+
+  useEffect(() => {
+    setEventsStatus('loading');
+    publicService
+      .getEvents()
+      .then((data) => {
+        setEvents(data);
+        setEventsStatus('ready');
+      })
+      .catch(() => setEventsStatus('error'));
   }, []);
 
   return (
@@ -203,6 +217,32 @@ export function Home() {
           </div>
         </div>
       </section>
+
+      <section className="bg-white py-16 dark:bg-white/5">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader eyebrow={eventsCopy.eyebrow} title={eventsCopy.title} description={eventsCopy.description} />
+          <BackendCardGrid
+            status={eventsStatus}
+            items={events.slice(0, 3)}
+            empty={eventsCopy.empty}
+            render={(item) => (
+              <Card
+                key={item.slug}
+                to={`/events/${item.slug}`}
+                image={item.coverImage}
+                title={item.title}
+                description={item.excerpt}
+                meta={`${eventsCopy.types[item.type] ?? item.type} · ${formatHomeDate(item.date, language)}`}
+              />
+            )}
+          />
+          <div className="mt-8">
+            <Button to="/events" variant="secondary">
+              {eventsCopy.cta}
+            </Button>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
@@ -216,6 +256,58 @@ function BackendCardGrid({ status, items, render, empty }) {
       {status === 'ready' && items.length > 0 && <div className="grid gap-6 md:grid-cols-3">{items.map(render)}</div>}
     </div>
   );
+}
+
+function getHomeEventsCopy(language) {
+  const copies = {
+    fr: {
+      eyebrow: 'Expositions / Événements',
+      title: 'Produits, savoir-faire et vie du centre',
+      description: 'Découvrez les expositions, ateliers et événements organisés autour des apprentis et artisans.',
+      empty: 'Aucun événement publié pour le moment.',
+      cta: 'Voir tous les événements',
+      types: {
+        exhibition: 'Exposition',
+        event: 'Événement',
+        workshop: 'Atelier',
+        announcement: 'Annonce'
+      }
+    },
+    ar: {
+      eyebrow: 'المعارض / الأحداث',
+      title: 'المنتجات والمهارات وحياة المركز',
+      description: 'اكتشف المعارض والورشات والأحداث المنظمة حول المتدرجين والحرفيين.',
+      empty: 'لا يوجد أي حدث منشور حاليا.',
+      cta: 'عرض كل الأحداث',
+      types: {
+        exhibition: 'معرض',
+        event: 'حدث',
+        workshop: 'ورشة',
+        announcement: 'إعلان'
+      }
+    },
+    en: {
+      eyebrow: 'Exhibitions / Events',
+      title: 'Products, know-how, and center life',
+      description: 'Discover exhibitions, workshops, and events organized around apprentices and artisans.',
+      empty: 'No published event is available yet.',
+      cta: 'View all events',
+      types: {
+        exhibition: 'Exhibition',
+        event: 'Event',
+        workshop: 'Workshop',
+        announcement: 'Announcement'
+      }
+    }
+  };
+
+  return copies[language] ?? copies.fr;
+}
+
+function formatHomeDate(value, language) {
+  if (!value) return '';
+  const locale = language === 'ar' ? 'ar-MA' : language === 'en' ? 'en-US' : 'fr-FR';
+  return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(value));
 }
 
 function buildFallbackContent(language) {
